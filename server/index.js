@@ -19,14 +19,36 @@ app.get("/patients", (req, res) => {
   res.send(patients);
 })
 
-app.get("/patients/:id", (req, res) => {
-  // Get the id from the params
-  const patientId = parseInt(req.params.id);
-  console.log(patientId);
-  // find this specific patient in my array;
-  const onePatient = patients.find(patient => patient.id === patientId)
-  // send him back
-  res.send(onePatient);
+// an endpoint that returns just one patient
+app.get("/patients/:patientId", (req, res) => {
+  // get patientId params
+  const patientId = req.params.patientId
+  // find the specific patient
+  const onePatient = patients.find(patient => patient.id === parseInt(patientId))
+
+  // return it.
+  if (onePatient) {
+    res.send(onePatient)
+  } else {
+    res.status(404).send("didn't find that guy")
+  }
+})
+
+
+// endpoint that returns only patients that exercise daily
+app.get("/patients/exercise/:daily", (req, res) => {
+  // get the value of do => "yes" | "no"
+  const daily = req.params.daily; // "yes" | "no"
+  console.log(`getting all patients that exercise ${daily}`)
+
+  if (daily !== "yes" && daily !== "no") {
+    res.send("you must say yes or no")
+  } else {
+    // filter out the ones the opposite ones
+    const somePatients = patients.filter(patient => patient.dailyExercise === daily)
+    // return
+    res.send(somePatients);
+  }
 })
 
 
@@ -36,6 +58,8 @@ app.get("/copy/:text", (req, res) => {
   console.log("the text I got is", text);
   res.send(text);
 })
+
+
 
 
 // Start the server

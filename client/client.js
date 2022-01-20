@@ -14,11 +14,21 @@ const getPatients = async () => {
   console.log("patients", response.data);
 }
 
-const getOnePatient = async (id) => {
-  // Make a request = GET => /patients/:id
-  // console.log()
-  const response = await axios.get(`http://localhost:4001/patients/${id}`);
-  console.log("the patient!", response);
+const getOnePatient = async () => {
 }
 
-getOnePatient(2410);
+// make a request to the server to:
+// get all patients based on their exercise patterns
+const getPatientsExercise = async (yesNo) => {
+  try { 
+    console.log("im trying to make the request")
+    const response = await axios.get(`http://localhost:4001/patients/exercise/${yesNo}`);
+    console.log("the request was successfull!")
+    console.log(response.data);
+  } catch (error) {
+    console.log("the request was blew up :(")
+    console.log(error.message);
+  }
+}
+
+getPatientsExercise("yes");
